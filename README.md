@@ -1,7 +1,11 @@
 # MCP Subfinder Server
 
+<p align="center">
+  <img src="assets/logo.png" alt="MCP Subfinder Logo" width="400">
+</p>
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Go Version](https://img.shields.io/badge/Go-1.20+-00ADD8.svg)](https://golang.org/)
+[![Go Version](https://img.shields.io/badge/Go-1.24+-00ADD8.svg)](https://golang.org/)
 [![MCP Version](https://img.shields.io/badge/MCP-v0.3-success.svg)](https://github.com/copyleftdev/mcp-subfinder-server)
 [![ProjectDiscovery](https://img.shields.io/badge/Powered%20by-ProjectDiscovery-orange.svg)](https://github.com/projectdiscovery/subfinder)
 
