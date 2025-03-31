@@ -1,0 +1,253 @@
+{
+	"info": {
+		"_postman_id": "c78d5a15-4e10-48b9-9a59-8c16f6d0d3e5",
+		"name": "MCP Subfinder Server",
+		"description": "Collection for testing the Model Context Protocol (MCP) Subfinder Server, which provides robust subdomain enumeration capabilities similar to the subfinder CLI tool.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Initialize",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 1,\n    \"method\": \"initialize\",\n    \"params\": {\n        \"protocolVersion\": \"0.3\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Establishes connection with the MCP server and verifies protocol compatibility"
+			},
+			"response": []
+		},
+		{
+			"name": "2. Tools List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 2,\n    \"method\": \"tools.list\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Lists all available tools provided by the MCP server"
+			},
+			"response": []
+		},
+		{
+			"name": "3. Enumerate Subdomains - Basic (example.com)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 3,\n    \"method\": \"tools.call\",\n    \"params\": {\n        \"name\": \"enumerateSubdomains\",\n        \"arguments\": {\n            \"domain\": \"example.com\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Basic subdomain enumeration for example.com using default settings. Uses all available sources and optimal thread settings similar to the CLI version."
+			},
+			"response": []
+		},
+		{
+			"name": "4. Enumerate Subdomains - Advanced (example.com)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 4,\n    \"method\": \"tools.call\",\n    \"params\": {\n        \"name\": \"enumerateSubdomains\",\n        \"arguments\": {\n            \"domain\": \"example.com\",\n            \"timeout\": 120,\n            \"recursive\": true,\n            \"maxDepth\": 2,\n            \"sourcesFilter\": \"github,dnsdumpster,alienvault\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Advanced subdomain enumeration for example.com with extended timeout (120s), recursive mode and source filtering. The recursive mode will also check subdomains of discovered subdomains up to maxDepth levels deep."
+			},
+			"response": []
+		},
+		{
+			"name": "5. Enumerate with Source Exclusion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 5,\n    \"method\": \"tools.call\",\n    \"params\": {\n        \"name\": \"enumerateSubdomains\",\n        \"arguments\": {\n            \"domain\": \"example.com\",\n            \"timeout\": 60,\n            \"excludeSourcesFilter\": \"waybackarchive,threatcrowd\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Enumerate subdomains while excluding specific sources that might be rate-limited or unreliable."
+			},
+			"response": []
+		},
+		{
+			"name": "6. Error Test - Invalid Tool",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 6,\n    \"method\": \"tools.call\",\n    \"params\": {\n        \"name\": \"nonExistentTool\",\n        \"arguments\": {}\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Testing error handling for an invalid tool name"
+			},
+			"response": []
+		},
+		{
+			"name": "7. Error Test - Missing Required Parameter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": 7,\n    \"method\": \"tools.call\",\n    \"params\": {\n        \"name\": \"enumerateSubdomains\",\n        \"arguments\": {}\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/mcp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mcp"
+					]
+				},
+				"description": "Testing error handling for missing required parameters"
+			},
+			"response": []
+		},
+		{
+			"name": "8. Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"health"
+					]
+				},
+				"description": "Simple health check endpoint to verify server is running"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
